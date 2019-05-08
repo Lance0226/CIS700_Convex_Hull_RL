@@ -1,4 +1,4 @@
-from Convex_Hull import *
+from convex_hull import *
 import argparse
 
 parser = argparse.ArgumentParser(description='')
