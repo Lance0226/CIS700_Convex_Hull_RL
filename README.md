@@ -1,6 +1,6 @@
-# Pointer Networks in Tensorflow
+# Pointer Networks with Reinforcement Learning
 
-This is an implementation of [Pointer Networks](https://arxiv.org/abs/1506.03134) to solve the [Convex Hull](https://en.wikipedia.org/wiki/Convex_hull) problem. Stacking RNN layers is supported.
+This is an implementation of [Pointer Networks](https://arxiv.org/abs/1506.03134) to solve the [Convex Hull](https://en.wikipedia.org/wiki/Convex_hull) problem. 
 
 ![](README/arch.png)
 
