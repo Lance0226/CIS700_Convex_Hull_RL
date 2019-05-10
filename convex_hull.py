@@ -1,8 +1,10 @@
+import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 import math
 import numpy as np
 import time
 from time import sleep
-import os
+
 
 from IPython.display import clear_output
 from tqdm import tqdm
@@ -161,7 +163,7 @@ class Attention(nn.Module):
             #expanded_query = query.repeat(1, 1, seq_len)  # [batch_size x hidden_size x seq_len]
             expanded_query = query.repeat(1, 1, seq_len)
             V = self.V.unsqueeze(0).unsqueeze(0).repeat(batch_size, 1, 1)  # [batch_size x 1 x hidden_size]
-            logits = torch.bmm(V, F.tanh(expanded_query + ref)).squeeze(1)
+            logits = torch.bmm(V, torch.tanh(expanded_query + ref)).squeeze(1)
 
         elif self.name == 'Dot':
             query = query.unsqueeze(2)
@@ -172,7 +174,7 @@ class Attention(nn.Module):
             raise NotImplementedError
 
         if self.use_tanh:
-            logits = self.C * F.tanh(logits)
+            logits = self.C * torch.tanh(logits)
         else:
             logits = logits
         return ref, logits
@@ -334,7 +336,7 @@ class PointerNet(nn.Module):
             for i in range(self.n_glimpses):
                 ref, logits = self.glimpse(query, encoder_outputs)
                 logits, mask = self.apply_mask_to_logits(logits, mask, idxs)
-                query = torch.bmm(ref, F.softmax(logits).unsqueeze(2),).squeeze(2)
+                query = torch.bmm(ref, F.softmax(logits, dim=1).unsqueeze(2),).squeeze(2)
 
             _, logits = self.pointer(query, encoder_outputs)
             #print "logits logits logits"
@@ -342,7 +344,7 @@ class PointerNet(nn.Module):
             logits, mask = self.apply_mask_to_logits(logits, mask, idxs)
             #print "logits_ logits_ logits_"
             #print logits
-            probs = F.softmax(logits)
+            probs = F.softmax(logits,dim = 1)
 
             #print "probs probs probs"
             #print probs.shape
@@ -538,7 +540,7 @@ class TrainModel:
                 self.actor_optim.zero_grad()
                 # minimize actor loss
                 actor_loss.backward()
-                torch.nn.utils.clip_grad_norm(self.model.actor.parameters(),
+                torch.nn.utils.clip_grad_norm_(self.model.actor.parameters(),
                                               float(self.max_grad_norm), norm_type=2)
 
                 self.actor_optim.step()
