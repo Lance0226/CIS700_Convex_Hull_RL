@@ -6,9 +6,21 @@ This is an implementation of [Pointer Networks](https://arxiv.org/abs/1506.03134
 
 ## Environments
 
-* Python 2.x
-* TensorFlow 1.0.1
-* scipy 1.2.1
+Name                Version                   Install          
+
+IPython             5.8.0                     pip install IPython
+
+numpy               1.16.3                    pip install numpy
+
+tqdm                4.31.1                    pip install tqdm
+
+matplotlib          2.2.4                     pip install matplotlib
+
+torch               1.1.0                     pip install torch
+
+scipy               1.2.1                     pip install scipy
+
+libomp              8.0.0
 
 ## Usage
 
